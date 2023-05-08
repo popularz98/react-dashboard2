@@ -1,72 +1,73 @@
-import React, { useState, useEffect } from 'react'
-import Chart from "react-apexcharts";
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function App() {
-  const [petPrices, setPetPrice] = useState([])
-  const [petChart, setPetChart] = useState({
-    options: {
-      chart: {
-        id: "basic-bar"
-      },
-      xaxis: {
-        categories: []
-      }
-    },
-    series: [
-      {
-        name: "series-1",
-        data: []
-      }
-    ]
-  })
-
+  const [customers, setCustomers] = useState([])
   useEffect(() => {
-    fetch('https://aggressive-lab-coat-lamb.cyclic.app/pets_price')
-    .then(res => res.json())
-    .then(result => {
-      console.log(result)
-      setPetPrice(result)
-    })
-
-    fetch('https://aggressive-lab-coat-lamb.cyclic.app/pets_price_chart')
-    .then(res => res.json())
-    .then(result => {
-      console.log(result)
-      setPetChart({
-        options: {
-          chart: {
-            id: "basic-bar"
-          },
-          xaxis: {
-            categories: result.petNames
-          }
-        },
-        series: [
-          {
-            name: "ราคา",
-            data: result.prices
-          }
-        ]
+    axios.get('https://tasty-crow-rugby-shirt.cyclic.app/final_project')
+      .then(res => {
+        console.log(res.data)
+        setCustomers(res.data)
       })
-    })
   }, [])
 
   return (
     <div>
-      <h1>ปลินดา จะนู6401510</h1>
-      <ul>
-        {petPrices.map(pet => (
-          <li key={pet.id}>
-            {pet.petName} {pet.price}
-          </li>
-        ))}
-      </ul>
-      <Chart
-        options={petChart.options}
-        series={petChart.series}
-        type='bar'
-        width='500'
-      />
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              News
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <h1>Dashboard</h1>
+      <h2>ตารางวัดค่าน้ำ</h2>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>DATE</TableCell>
+              <TableCell>TIME</TableCell>
+              <TableCell>TDS</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {final_project.map((final_project) => (
+              <TableRow key={final_project.id}>
+                <TableCell component="th" scope="row">
+                  {final_project.id}
+                </TableCell>
+                <TableCell>{final_project.date}</TableCell>
+                <TableCell>{final_project.time}</TableCell>
+                <TableCell>{final_project.tds}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }
